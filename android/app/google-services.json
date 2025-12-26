@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "2858435678",
+    "project_id": "flutterestate",
+    "storage_bucket": "flutterestate.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2858435678:android:5ef6968c5fe457d72be0cf",
+        "android_client_info": {
+          "package_name": "com.example.estateplatform"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgCt0y0blbipFGe-F6_BTX7gX1lHEcOxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2858435678:android:8f76c40e861f365f2be0cf",
+        "android_client_info": {
+          "package_name": "com.example.koor_ui_kit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgCt0y0blbipFGe-F6_BTX7gX1lHEcOxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

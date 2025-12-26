@@ -1,10 +1,16 @@
 import '../../shared/models/property.dart';
-import '../../shared/enums/property_status.dart';
 
 class PropertyRepository {
+  PropertyRepository._internal();
+  static final PropertyRepository instance = PropertyRepository._internal();
+
   final List<Property> _properties = [];
 
   List<Property> getAll() => _properties;
+
+  List<Property> getByOwner(String ownerId) {
+    return _properties.where((p) => p.ownerId == ownerId).toList();
+  }
 
   void add(Property property) {
     _properties.add(property);
