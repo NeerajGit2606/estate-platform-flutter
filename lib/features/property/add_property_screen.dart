@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../shared/models/property.dart';
 import '../../shared/enums/property_status.dart';
 import '../../core/services/property_repository.dart';
+import '../../shared/widgets/home_button.dart';
 
 class AddPropertyScreen extends StatefulWidget {
   const AddPropertyScreen({super.key});
@@ -11,10 +12,10 @@ class AddPropertyScreen extends StatefulWidget {
 }
 
 class _AddPropertyScreenState extends State<AddPropertyScreen> {
-  final _titleController = TextEditingController();
-  final _repo = PropertyRepository.instance;
+  final TextEditingController _titleController = TextEditingController();
+  final PropertyRepository repo = PropertyRepository();
 
-  void _saveDraft() {
+  Future<void> _saveDraft() async {
     final property = Property(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: _titleController.text,
@@ -22,15 +23,18 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       status: PropertyStatus.draft,
     );
 
-    _repo.add(property);
-    Navigator.pop(context);
+    await repo.add(property);
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Property saved as Draft')));
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Property saved as Draft')),
+    );
+
+    Navigator.pop(context);
   }
 
-  void _submitForApproval() {
+  Future<void> _submitForApproval() async {
     final property = Property(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: _titleController.text,
@@ -38,24 +42,33 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       status: PropertyStatus.submitted,
     );
 
-    _repo.add(property);
-    Navigator.pop(context);
+    await repo.add(property);
+
+    if (!mounted) return;
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Property submitted for approval')),
     );
+
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Property')),
+      appBar: AppBar(
+        title: const Text('Add Property'),
+        actions: const [HomeButton()],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
               controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Property Title'),
+              decoration: const InputDecoration(
+                labelText: 'Property Title',
+              ),
             ),
             const SizedBox(height: 20),
             Row(

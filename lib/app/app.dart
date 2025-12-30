@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'app_bootstrap.dart';
+import '../features/auth/role_selection_screen.dart';
+import '../app/auth_gate.dart';
 
 class RealEstateApp extends StatelessWidget {
   const RealEstateApp({super.key});
@@ -7,13 +8,9 @@ class RealEstateApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'EstateBridge',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.deepPurple,
-      ),
-      home: const AppBootstrap(),
+      debugShowCheckedModeBanner: false,
+      home: const AuthGate(),
     );
   }
 }

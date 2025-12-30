@@ -2,44 +2,55 @@ import 'package:flutter/material.dart';
 import '../../core/services/property_repository.dart';
 import '../../shared/models/property.dart';
 import '../../features/property/add_property_screen.dart';
+import '../../shared/widgets/home_button.dart';
 
-class SellerDashboard extends StatefulWidget {
+class SellerDashboard extends StatelessWidget {
   const SellerDashboard({super.key});
 
   @override
-  State<SellerDashboard> createState() => _SellerDashboardState();
-}
-
-class _SellerDashboardState extends State<SellerDashboard> {
-  final repo = PropertyRepository.instance;
-
-  @override
   Widget build(BuildContext context) {
-    final List<Property> properties = repo.getByOwner('seller_001');
+    final PropertyRepository repo = PropertyRepository();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Seller Dashboard')),
-      body: properties.isEmpty
-          ? const Center(child: Text('No properties yet'))
-          : ListView.builder(
-              itemCount: properties.length,
-              itemBuilder: (context, index) {
-                final property = properties[index];
-                return Card(
-                  child: ListTile(
-                    title: Text(property.title),
-                    subtitle: Text(property.status.name.toUpperCase()),
+      appBar: AppBar(
+        title: const Text('Seller Dashboard'),
+        actions: const [HomeButton()],
+      ),
+      body: StreamBuilder<List<Property>>(
+        stream: repo.streamByOwner('seller_001'),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No properties yet'));
+          }
+
+          final properties = snapshot.data!;
+
+          return ListView.builder(
+            itemCount: properties.length,
+            itemBuilder: (context, index) {
+              final property = properties[index];
+              return Card(
+                child: ListTile(
+                  title: Text(property.title),
+                  subtitle: Text(
+                    property.status.name.toUpperCase(),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
+        onPressed: () {
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => const AddPropertyScreen()),
           );
-          setState(() {}); // 👈 refresh list after return
         },
         child: const Icon(Icons.add),
       ),

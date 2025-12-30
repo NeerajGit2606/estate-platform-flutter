@@ -15,10 +15,27 @@ class Property {
     this.isPremium = false,
   });
 
-  Property copyWith({
-    PropertyStatus? status,
-    bool? isPremium,
-  }) {
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'ownerId': ownerId,
+      'status': status.name,
+      'isPremium': isPremium,
+    };
+  }
+
+  factory Property.fromMap(Map<String, dynamic> map) {
+    return Property(
+      id: map['id'],
+      title: map['title'],
+      ownerId: map['ownerId'],
+      status: PropertyStatus.values.firstWhere((e) => e.name == map['status']),
+      isPremium: map['isPremium'] ?? false,
+    );
+  }
+
+  Property copyWith({PropertyStatus? status, bool? isPremium}) {
     return Property(
       id: id,
       title: title,
